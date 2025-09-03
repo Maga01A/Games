@@ -1,0 +1,66 @@
+#include <stdio.h>
+#include <stdarg.h>
+#include <ctype.h>
+#include <string.h>
+
+int to_upper(char *s) {
+    int count = 0;
+    while (*s) {
+        putchar(toupper(*s));
+        s++;
+        count++;
+    }
+    return count;
+}
+int to_lower(char *s) {
+    int count = 0;
+    while (*s) {
+        putchar(tolower(*s));
+        s++;
+        count++;
+    }
+    return count;
+}
+int check_number(char *s) {
+    while (*s) {
+        if (!isdigit(*s)) return 0;
+        s++;
+    }
+    return 1;
+}
+int check_alpha(char *s) {
+    while (*s) {
+        if (!isalpha(*s)) return 0;
+        s++;
+    }
+    return 1;
+}
+int _printf_custom(const char *format, ...) {
+    va_list args;
+    va_start(args, format);
+    int count = 0;
+while (*format) {
+    if (*format == '%') {
+        format++;
+        char *str;
+        int res;
+        if (*format == 's') count += (str = va_arg(args, char*), fputs(str, stdout), strlen(str));
+        else if (*format == 'c') putchar((char)va_arg(args,int)), count++;
+        else if (strncmp(format,"upper",5)==0) count += to_upper(va_arg(args,char*)), format+=4;
+        else if (strncmp(format,"lower",5)==0) count += to_lower(va_arg(args,char*)), format+=4;
+        else if (strncmp(format,"isnumber",8)==0) res=check_number(va_arg(args,char*)), putchar(res+'0'), count++, format+=7;
+        else if (strncmp(format,"isalpha",7)==0) res=check_alpha(va_arg(args,char*)), putchar(res+'0'), count++, format+=6;
+
+    } else putchar(*format), count++;
+    format++;
+}
+}
+int main() {
+    _printf_custom("Name: %upper\n", "Sultanov");
+    _printf_custom("Code: %lower\n", "ABC123");
+    _printf_custom("Check numeric: %isnumber\n", "1234");
+    _printf_custom("Check alpha: %isalpha\n", "HelloWorld");
+    return 0;
+}
+
+
