@@ -1,0 +1,21 @@
+// Online C compiler to run C program online
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main() {
+    
+    char ch;
+    FILE *fptr = fopen("file_name.txt", "r");
+    if (fptr == NULL) {
+        perror("Error opening file");
+        return 1;
+    }
+    else{
+        while ((ch = fgetc(fptr)) !=EOF)
+        printf("%c", ch);
+    fclose(fptr);
+
+    }
+    return 0;
+}
